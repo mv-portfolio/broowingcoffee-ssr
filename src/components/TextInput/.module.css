@@ -1,0 +1,39 @@
+.inputPane {
+  height: 5.75vh;
+  align-items: center;
+  flex-direction: row;
+  border-radius: 1vh;
+  background-color: var(--WHITE);
+}
+
+.inputPane .prefixComponentPane {
+  height: 100%;
+  padding-left: 1.5vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.inputPane .input {
+  display: flex;
+  height: 90%;
+  width: 80%;
+  font-family: 'Font';
+  font-size: 1.75vh;
+  font-weight: bold;
+  color: var(--BLACK2);
+  padding: 0 0 0 1.5vh;
+  border: none;
+  border-radius: 0.5vh;
+  background-color: inherit;
+}
+
+.inputPane .input::placeholder {
+  font-size: 1.75vh;
+  font-family: 'Font';
+  font-weight: normal;
+  color: #c9c9c9;
+}
+
+.inputPane .input:focus {
+  outline: none;
+}

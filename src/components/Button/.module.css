@@ -1,0 +1,24 @@
+.button {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  height: 5.75vh;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-family: 'Font';
+  font-weight: bold;
+  font-size: 1.75vh;
+  background-color: transparent;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.button:active {
+  opacity: 0.75;
+  -webkit-tap-highlight-color: transparent;
+}

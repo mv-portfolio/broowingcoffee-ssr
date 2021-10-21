@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import {useEffect} from 'react';
+import Navigator from 'navigator';
+import {height} from 'utils/responsive';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function App() {
+  const viewportListener = () => {
+    const metaViewport = document.querySelector('meta[name=viewport]');
+    const onResize = () => {
+      if (height !== window.innerHeight) {
+        metaViewport.setAttribute(
+          'content',
+          `height=${height}, width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1`,
+        );
+        return;
+      }
+      metaViewport.setAttribute(
+        'content',
+        `height=device-height, width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1`,
+      );
+    };
+    window.addEventListener('resize', onResize);
+  };
+
+  useEffect(viewportListener, []);
+
+  return <Navigator />;
 }
-
-export default App;

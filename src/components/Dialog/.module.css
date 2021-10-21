@@ -1,0 +1,39 @@
+.mainPane {
+  height: 25vh;
+  width: 40vh;
+  border-radius: 2vh;
+  background-color: var(--WHITE2);
+  z-index: 1;
+}
+
+.mainPane .centerPane {
+  flex: 4;
+  align-items: center;
+  justify-content: center;
+  /* background-color: rgba(133, 14, 14, 0.25); */
+}
+.centerPane .title {
+  width: 25vh;
+  font-size: 2.5vh;
+  text-align: center;
+  /* font-family: 'Font-Bold'; */
+  font-weight: bold;
+}
+.centerPane .subtitle {
+  width: 25vh;
+  text-align: center;
+}
+
+.mainPane .bottomPane {
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-top: solid 0.25vh rgba(0, 0, 0, 0.1);
+  /* background-color: rgba(255, 0, 0, 0.35); */
+}
+
+.bottomPane .button {
+  width: 20vh;
+  color: var(--BLACK);
+}

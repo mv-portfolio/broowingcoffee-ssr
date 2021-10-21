@@ -1,0 +1,10 @@
+{
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "module": "commonJS",
+    "target": "es6",
+    "allowSyntheticDefaultImports": false
+  }
+}

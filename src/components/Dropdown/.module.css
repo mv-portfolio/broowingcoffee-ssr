@@ -1,0 +1,39 @@
+.mainPane {
+  min-width: 35vh;
+  min-height: 5.5vh;
+  border-radius: 1vh;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3vh 0 2vh;
+  box-shadow: 0.25vh 0.25vh 0.25vh rgba(0, 0, 0, 0.25);
+  background-color: var(--ACCENT-COLOR);
+}
+
+.mainPane .title {
+  font-size: 1.75vh;
+  font-weight: bold;
+  color: #282627;
+}
+
+.mainPane .placeholder {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.pickerList {
+  width: 30.5vh;
+  border-radius: 0.5vh;
+  padding: 0.5vh 1vh 0.5vh 1vh;
+  background-color: #383637;
+  position: absolute;
+  margin-top: 6.25vh;
+  overflow-y: scroll;
+  box-shadow: 0.25vh 0.25vh 0.5vh rgba(0, 0, 0, 0.25);
+  z-index: 1;
+}
+
+.pickerList .pickerItem {
+  height: 4vh;
+  justify-content: flex-start;
+  border-radius: 0.5vh;
+}
