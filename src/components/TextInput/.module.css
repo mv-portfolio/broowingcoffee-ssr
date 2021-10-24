@@ -15,23 +15,23 @@
 
 .inputPane .input {
   display: flex;
-  height: 90%;
-  width: 80%;
+  height: inherit;
+  width: 82.5%;
   font-family: 'Font';
   font-size: 1.75vh;
-  font-weight: bold;
-  color: var(--BLACK2);
+  color: var(--WHITE);
   padding: 0 0 0 1.5vh;
   border: none;
   border-radius: 0.5vh;
-  background-color: inherit;
+  background-color: transparent;
 }
 
 .inputPane .input::placeholder {
   font-size: 1.75vh;
   font-family: 'Font';
   font-weight: normal;
-  color: #c9c9c9;
+  opacity: 0.25;
+  color: inherit;
 }
 
 .inputPane .input:focus {
