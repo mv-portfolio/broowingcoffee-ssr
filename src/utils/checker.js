@@ -57,8 +57,7 @@ const isObject = value => {
 
 const isJsonString = value => {
   try {
-    const isObject =
-      value.slice(0, 1) === '{' && value.slice(value.length - 1) === '}';
+    const isObject = value.slice(0, 1) === '{' && value.slice(value.length - 1) === '}';
     if (typeof value === 'string' && isObject) {
       JSON.parse(value);
     } else {
@@ -70,7 +69,7 @@ const isJsonString = value => {
   return true;
 };
 
-module.exports = {
+export {
   isTypeof,
   isName,
   isInteger,

@@ -1,0 +1,63 @@
+.mainPane {
+  border-radius: 1vh;
+  box-shadow: 0.15vh 0.15vh 0.25vh 0.1vh rgba(0, 0, 0, 0.25);
+  background-color: var(--BACKGROUND-COLOR3);
+}
+
+.mainPane .topPane {
+  min-height: 5.5vh;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 0 3vh 0 2vh;
+}
+
+.topPane .name {
+  font-weight: bold;
+  color: var(--WHITE);
+}
+
+.topPane .price {
+  font-size: 1.75vh;
+  font-weight: bold;
+  color: var(--ACCENT-COLOR);
+}
+
+.mainPane .bodyPane {
+  padding: 0 3vh 1.5vh 2vh;
+}
+.bodyPane .addons {
+  font-size: 1.75vh;
+  color: var(--WHITE);
+}
+.bodyPane .propertyPane {
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: solid 0.05vh rgba(25, 25, 25, 0.25);
+}
+.propertyPane .propertyName {
+  font-size: 1.45vh;
+  color: var(--WHITE);
+}
+.propertyPane .propertyValue {
+  font-size: 1.4vh;
+  font-weight: bold;
+  color: var(--ACCENT-COLOR);
+}
+
+.bodyPane .propertyPaneAddons {
+  flex-direction: row;
+  padding: 0 0 0 0.5vh;
+  justify-content: space-between;
+  border-bottom: solid 0.05vh rgba(25, 25, 25, 0.25);
+}
+
+.propertyPaneAddons .propertyName {
+  font-size: 1.45vh;
+  color: var(--WHITE);
+}
+.propertyPaneAddons .propertyValue {
+  font-size: 1.4vh;
+  font-weight: bold;
+  color: var(--ACCENT-COLOR);
+}

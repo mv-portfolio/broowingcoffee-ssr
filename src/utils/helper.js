@@ -1,0 +1,160 @@
+const getUsername = text => {
+  let lastIndex = text.indexOf('@');
+  return text.substring(0, lastIndex);
+};
+const getProperties = obj => {
+  let temp_data = [];
+  Object.keys(obj).forEach((objKey, objKeyIdx) => {
+    Object.values(obj).forEach((objVal, objValIdx) => {
+      if (objKeyIdx === objValIdx) {
+        temp_data.push({
+          property: objKey,
+          value: objVal,
+        });
+      }
+    });
+  });
+  return temp_data;
+};
+const getSpecificProperty = (keys, payload) => {
+  let redundantFields = [];
+  let temp_keys = keys;
+  let object = {};
+  const hasRedundantProps = payload => {
+    const fields = Object.getOwnPropertyNames(payload);
+    Object.values(payload).forEach(payload => {
+      if (typeof payload === 'object') {
+        const payloadObjectFields = Object.getOwnPropertyNames(payload);
+        fields.forEach(field => {
+          payloadObjectFields.forEach(payloadObjectField => {
+            if (field === payloadObjectField) {
+              if (redundantFields.length === 0) {
+                return redundantFields.push(field);
+              }
+
+              let isExist = false;
+              redundantFields.forEach(redundantField => {
+                if (redundantField === payloadObjectField) {
+                  isExist = true;
+                }
+              });
+
+              if (!isExist) {
+                return redundantFields.push(field);
+              }
+              return;
+            }
+          });
+        });
+      }
+    });
+    return redundantFields;
+  };
+  const ObjectValues = Object.values(payload);
+  const propsRedundantcies = hasRedundantProps(payload);
+
+  if (!Array.isArray(temp_keys)) {
+    temp_keys = Object.keys(temp_keys);
+  }
+
+  temp_keys.forEach(field => {
+    Object.getOwnPropertyNames(payload).forEach((payloadField, payloadFieldIdx) => {
+      if (field === payloadField) {
+        object[payloadField] = ObjectValues[payloadFieldIdx];
+      }
+
+      //2nd Level
+      if (typeof ObjectValues[payloadFieldIdx] === 'object') {
+        const payloadObjectFields = ObjectValues[payloadFieldIdx];
+        const payloadObjectValues = Object.values(payloadObjectFields);
+        Object.getOwnPropertyNames(payloadObjectFields).forEach(
+          (payloadObjectField, payloadObjectFieldIdx) => {
+            if (field === payloadObjectField) {
+              let isRedundantProp = false;
+              propsRedundantcies.forEach(redundancyProp => {
+                if (redundancyProp === payloadObjectField) {
+                  return (isRedundantProp = true);
+                }
+              });
+
+              if (!isRedundantProp) {
+                object[payloadObjectField] = payloadObjectValues[payloadObjectFieldIdx];
+              }
+            }
+          },
+        );
+      }
+    });
+  });
+  return object;
+};
+const arrayFind = (array = [], filter) => {
+  if (!filter) return array;
+  const filterProps = getProperties(filter);
+  const find = array.filter(data => {
+    let matches = [];
+    let matchedNumber = 0;
+    getProperties(data).forEach(({property, value}) => {
+      filterProps.forEach(({property: property2, value: value2}) => {
+        matches.push(property === property2 && value === value2);
+      });
+    });
+    matches.forEach(match => {
+      if (match) matchedNumber += 1;
+    });
+    if (matchedNumber === filterProps.length) {
+      return data;
+    }
+  });
+  return find.length <= 1 ? find[0] : find;
+};
+const arrayFilter = (data = [], filter) => {
+  let temp_data = [];
+  const filterProps = getProperties(filter);
+  temp_data = data.filter(item => {
+    let matches = [];
+    let matchedNumber = 0;
+    getProperties(item).forEach(({property, value}) => {
+      filterProps.forEach(({property: property2, value: value2}) => {
+        matches.push(property === property2 && value === value2);
+      });
+    });
+    matches.forEach(match => {
+      if (match) matchedNumber += 1;
+    });
+    if (matchedNumber !== filterProps.length) {
+      return data;
+    }
+  });
+  return temp_data;
+};
+const arrayUpdate = (data = [], filter, payload = {}) => {
+  let temp_data = [];
+  const {property: filterKey, value: filterValue} = getProperties(filter)[0];
+
+  temp_data = data.map(item => {
+    let keyValue = '';
+    getProperties(item).forEach(({property, value}) => {
+      if (property === filterKey) {
+        keyValue = value;
+      }
+    });
+    if (keyValue === filterValue) {
+      return {
+        ...item,
+        ...payload,
+      };
+    }
+    return item;
+  });
+  return temp_data;
+};
+
+export {
+  getUsername,
+  getProperties,
+  getSpecificProperty,
+  arrayFind,
+  arrayUpdate,
+  arrayFilter,
+};

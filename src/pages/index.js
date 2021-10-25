@@ -1,7 +1,10 @@
-import ResetPasswordPage from './ResetPassword';
-import ErrorPage from './Error';
-import SuccessPage from './Success';
-import HomePage from './Home';
-import LoadingPage from './Loading';
+import {lazy} from 'react';
 
-export {HomePage, LoadingPage, ErrorPage, SuccessPage, ResetPasswordPage};
+const ResetPasswordPage = lazy(() => import('./ResetPassword'));
+const ErrorPage = lazy(() => import('./Error'));
+const SuccessPage = lazy(() => import('./Success'));
+const HomePage = lazy(() => import('./Home'));
+const LoadingPage = lazy(() => import('./Loading'));
+const ReceiptPage = lazy(() => import('./Receipt'));
+
+export {HomePage, LoadingPage, ErrorPage, SuccessPage, ResetPasswordPage, ReceiptPage};

@@ -7,7 +7,7 @@
   justify-content: center;
   border: none;
   cursor: pointer;
-  color: #fff;
+  color: var(--WHITE);
   font-family: 'Font';
   font-weight: bold;
   font-size: 1.75vh;

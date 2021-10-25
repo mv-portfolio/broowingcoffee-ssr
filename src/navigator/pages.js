@@ -1,4 +1,4 @@
-import {HomePage, ResetPasswordPage, ErrorPage} from 'pages';
+import {HomePage, ResetPasswordPage, ReceiptPage, ErrorPage} from 'pages';
 
 const pages = [
   {
@@ -11,6 +11,13 @@ const pages = [
   {
     path: '/reset-password/:token/',
     component: ResetPasswordPage,
+    strict: true,
+    exact: true,
+    sensitive: true,
+  },
+  {
+    path: '/receipt/:token/',
+    component: ReceiptPage,
     strict: true,
     exact: true,
     sensitive: true,
