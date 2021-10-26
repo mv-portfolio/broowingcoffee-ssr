@@ -17,7 +17,7 @@ export default function HomePage() {
   const history = useHistory();
   const [state, setState] = useReducer(resetPasswordReducer, resetPasswordInitState);
 
-  useEffect(() => {
+  const screenInitListener = () => {
     server
       .peek('/reset-password-auth', {
         headers: {'reset-auth-token': token},
@@ -34,7 +34,8 @@ export default function HomePage() {
       .catch(err => {
         setState({type: 'set', authRequest: 'failed'});
       });
-  }, []);
+  };
+  useEffect(screenInitListener, []);
 
   const strength = val => {
     let strength = 0;
@@ -121,6 +122,7 @@ export default function HomePage() {
   };
 
   if (state.authRequest === 'success') {
+    document.title = 'Broowing Coffee | New Password';
     return (
       <View style={styles.mainPane}>
         <View style={styles.topPane}>
@@ -176,6 +178,7 @@ export default function HomePage() {
   }
 
   if (state.authRequest === 'success-done') {
+    document.title = 'Broowing Coffee | Success';
     return (
       <SuccessPage
         title='Password Saved'
@@ -185,6 +188,7 @@ export default function HomePage() {
   }
 
   if (state.authRequest === 'failed') {
+    document.title = 'Broowing Coffee | Error';
     return <ErrorPage />;
   }
 

@@ -39,7 +39,7 @@ export default function Receipt() {
     0,
   );
 
-  useEffect(() => {
+  const screenInitListener = () => {
     server
       .peek('/transaction-receipt', {
         timeout: 7000,
@@ -53,9 +53,11 @@ export default function Receipt() {
       .catch(err => {
         setState({type: 'set', authRequest: 'failed'});
       });
-  }, []);
+  };
+  useEffect(screenInitListener, []);
 
   if (state.authRequest === 'success') {
+    document.title = 'Broowing Coffee | Receipt';
     return (
       <View style={styles.mainPane}>
         <View style={styles.logoPane}>
@@ -113,6 +115,7 @@ export default function Receipt() {
   }
 
   if (state.authRequest === 'failed') {
+    document.title = 'Broowing Coffee | Error';
     return <ErrorPage />;
   }
 

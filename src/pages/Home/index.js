@@ -1,9 +1,13 @@
-import {Button, Text, View} from 'components';
-import {useHistory} from 'react-router';
+import {Text, View} from 'components';
+import {useEffect} from 'react';
 import styles from './.module.css';
 
 export default function HomePage() {
-  const history = useHistory();
+  const screenInitListener = () => {
+    document.title = 'Broowing Coffee | Welcome';
+  };
+  useEffect(screenInitListener, []);
+
   return (
     <View style={styles.mainPane}>
       <Text style={styles.title}>WELCOME</Text>

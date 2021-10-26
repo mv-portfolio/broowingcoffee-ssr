@@ -2,6 +2,8 @@ import {Text, View} from 'components';
 import styles from './.module.css';
 
 export default function ErrorPage() {
+
+
   return (
     <View style={styles.mainPane}>
       <Text style={styles.title}>Page Not Found</Text>
