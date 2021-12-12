@@ -4,8 +4,6 @@ import {ConfigInterceptor} from 'network/api/server';
 import Loading from 'pages/Loading';
 import App from './App';
 
-import './index.css';
-
 require('dotenv').config();
 ConfigInterceptor();
 

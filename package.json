@@ -1,7 +1,12 @@
 {
   "name": "capstone-web-server",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "private": true,
+  "author": {
+    "name": "Marvin Petate",
+    "email": "petatemarvin26@gmail.com",
+    "url": "https://petatemarvin26.github.io/"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
