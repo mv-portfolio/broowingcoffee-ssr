@@ -3,20 +3,53 @@
 }
 
 .mainPane .logoPane {
-  height: 10vh;
+  flex-direction: row;
+  height: 15vh;
   align-items: center;
   justify-content: center;
   background-color: var(--ACCENT-COLOR);
 }
-
 .logoPane .logo {
-  width: 7.5vh;
   height: 7.5vh;
   object-fit: contain;
+  padding: 1vh;
+}
+.logoPane .logoRightPane {
+  align-items: flex-start;
+}
+.logoRightPane .textTitle {
+  font-size: 1.75vh;
+  font-family: 'Font-Bold';
+  font-weight: bold;
+  letter-spacing: 0.1vh;
+  color: var(--BACKGROUND-COLOR);
+  text-decoration: none;
+}
+.logoRightPane .text {
+  font-size: 1.5vh;
+  color: var(--BACKGROUND-COLOR);
+}
+.logoRightPane .contactsPane {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.contactsPane .contact {
+  display: flex;
+  flex-direction: row;
+  font-size: 1.75vh;
+  text-decoration: none;
+  align-items: center;
+  justify-content: center;
+  color: var(--BACKGROUND-COLOR);
+  padding: 0.5vh 0.5vh 0.5vh 0;
+}
+.contactsPane .contactText {
+  font-size: 1.5vh;
 }
 
 .mainPane .topPane {
-  flex: 1;
+  flex: 2;
   align-items: center;
   justify-content: center;
 }
@@ -38,12 +71,12 @@
 }
 
 .mainPane .bodyPane {
-  flex: 2.75;
+  flex: 0.5;
   align-items: center;
 }
 .bodyPane .contentPane {
-  flex: 1;
   width: 42.5vh;
+  padding-bottom: 2vh;
 }
 .contentPane .headerPane {
   flex-direction: row;
@@ -61,7 +94,7 @@
 }
 
 .mainPane .bottomPane {
-  flex: 0.75;
+  flex: 0.5;
   align-items: center;
   justify-content: center;
 }

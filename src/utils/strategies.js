@@ -76,7 +76,7 @@ const sumOfPrice = (items = []) => {
   return totalPrice;
 };
 
-const onComputePrice = (isShow, purchasingProductInfo) => {
+const onComputePrice = ( purchasingProductInfo) => {
   let finalPrice = 0;
   const {discount, price, addons, copied} = purchasingProductInfo;
   const addonsTotalPrice = sumOfPrice(addons);
@@ -84,7 +84,7 @@ const onComputePrice = (isShow, purchasingProductInfo) => {
   if (discount) {
     finalPrice -= (discount / 100) * finalPrice;
   }
-  return Formatter.toMoney(finalPrice * (isShow ? 1 : copied));
+  return Formatter.toMoney(finalPrice);
 };
 
 export {sumOfPrice, onComputeTax, onComputePrice, getOrganizedPurchasedProducts};

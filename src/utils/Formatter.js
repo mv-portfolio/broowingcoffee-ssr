@@ -1,28 +1,15 @@
 export default class Formatter {
   static toName(name) {
-    let fn = '',
-      sn = '',
-      tn = '';
-    let trimedName = name.replace(/\s+/g, ' ').trim();
-    let lastIndex = trimedName.indexOf(' ');
-    let lastIndex2 = trimedName.indexOf(' ', lastIndex + 1);
-    if (lastIndex2 > 0) {
-      tn =
-        trimedName.substring(lastIndex2 + 1, lastIndex2 + 2).toUpperCase() +
-        trimedName.substring(lastIndex2 + 2).toLowerCase();
-      sn =
-        trimedName.substring(lastIndex + 1, lastIndex + 2).toUpperCase() +
-        trimedName.substring(lastIndex + 2, lastIndex2).toLowerCase();
-      fn = trimedName.substring(0, 1).toUpperCase() + trimedName.substring(1, lastIndex).toLowerCase();
-    } else if (lastIndex > 0) {
-      sn =
-        trimedName.substring(lastIndex + 1, lastIndex + 2).toUpperCase() + trimedName.substring(lastIndex + 2).toLowerCase();
-      fn = trimedName.substring(0, 1).toUpperCase() + trimedName.substring(1, lastIndex).toLowerCase();
-    } else {
-      fn = trimedName.substring(0, 1).toUpperCase() + trimedName.substring(1).toLowerCase();
-    }
-
-    return `${fn} ${sn} ${tn}`.trim();
+    const names = name ? name.split(' ') : [];
+    let tempName = '';
+    names.forEach((name, index) => {
+      tempName += name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+      if (index + 1 !== names.length) tempName += ' ';
+    });
+    return tempName;
+  }
+  static toPluralName(numberSubject, value) {
+    return numberSubject > 1 ? `${value}s` : `${value}`;
   }
   static toMoney(number) {
     return parseFloat(number).toFixed(2);
@@ -48,7 +35,7 @@ export default class Formatter {
       d = '',
       year = '';
 
-    month = this.monthTerm(prefer_date);
+    month = this.monthTerm(prefer_date.getMonth());
     d = prefer_date.getDate();
     year = prefer_date.getFullYear();
 
@@ -65,48 +52,52 @@ export default class Formatter {
       year = '';
 
     day = this.dayTerm(prefer_date);
-    month = this.monthTerm(prefer_date);
+    month = this.monthTerm(prefer_date.getMonth());
     d = prefer_date.getDate();
     year = prefer_date.getFullYear();
 
     return `${day}, ${month} ${d} ${year}`;
   }
 
-  static getDateDifference(date) {
-    let current_date = new Date();
-    let prefer_date = new Date(date);
-    let d = '',
-      hr = '',
-      min = '',
-      a = '';
+  static getDateDifference(prevDate) {
+    const prevTime = new Date(prevDate).getTime();
+    const currTime = new Date().getTime();
+    const timeDifference = Math.floor((currTime - prevTime) / 1000);
 
-    d = prefer_date.toLocaleDateString();
-    hr = prefer_date.getHours();
-    min = prefer_date.getMinutes();
-
-    a = hr > 12 ? 'PM' : 'AM';
-    hr = hr % 12;
-    hr = hr ? hr : 12;
-
-    let diff_date = current_date.getTime() - prefer_date;
-    if (diff_date >= 0 && diff_date < 60 * 1000) {
+    //exact
+    if (timeDifference === 0) {
       return 'Now';
-    } else if (diff_date >= 60 * 1000 && diff_date < 60 * 60 * 1000) {
-      if (diff_date < 60 * 1000 * 2) {
-        return Math.round(diff_date / (60 * 1000)) + ' minute ago';
-      } else {
-        return Math.round(diff_date / (60 * 1000)) + ' minutes ago';
+    }
+    //seconds
+    if (timeDifference < 60) {
+      return `${timeDifference} ${this.toPluralName(timeDifference, 'second')} ago`;
+    }
+    //minutes
+    if (timeDifference < 60 * 60) {
+      const minute = Math.floor(timeDifference / 60);
+      if (minute < 60) {
+        return `${minute} ${this.toPluralName(minute, 'minute')} ago`;
       }
-    } else if (diff_date >= 60 * 60 * 1000 && diff_date < 24 * 60 * 60 * 1000) {
-      if (diff_date < 60 * 60 * 1000 * 2) {
-        return Math.round(diff_date / (60 * 60 * 1000)) + ' hour ago';
-      } else {
-        return Math.round(diff_date / (60 * 60 * 1000)) + ' hours ago';
+    }
+    //hour
+    if (timeDifference < 60 * 60 * 60) {
+      const hour = Math.floor(timeDifference / (60 * 60));
+      if (hour < 24) {
+        return `${hour} ${this.toPluralName(hour, 'hour')} ago`;
       }
-    } else if (diff_date >= 24 * 60 * 60 * 1000 && diff_date < 24 * 60 * 60 * 1000 * 2) {
-      return 'Yesterday at ' + this.numberFormatter(hr) + ':' + this.numberFormatter(min) + ' ' + a;
-    } else {
-      return d + ' - ' + this.numberFormatter(hr) + ':' + this.numberFormatter(min) + ' ' + a;
+    }
+    //day
+    if (timeDifference < 60 * 60 * 60 * 24) {
+      // const day = Math.floor(timeDifference / (60 * 60 * 24));
+      // if (day <= 1) {
+      //   return 'Yesterday';
+      // }
+      const date = new Date(prevTime);
+      const hours = this.numberFormatter(date.getHours() % 12);
+      const minutes = this.numberFormatter(date.getUTCMinutes());
+      const seconds = this.numberFormatter(date.getSeconds());
+      const meridian = date.getHours() >= 12 ? 'PM' : 'AM';
+      return `${date.toLocaleDateString()} - ${hours}:${minutes} ${meridian}`;
     }
   }
   static getDayGreeting() {
@@ -147,33 +138,71 @@ export default class Formatter {
     }
     return day;
   }
-  static monthTerm(date) {
+  static monthTerm(number) {
     let month;
-    if (date.getMonth() === 0) {
+    if (number === 0) {
       month = 'January';
-    } else if (date.getMonth() === 1) {
+    } else if (number === 1) {
       month = 'February';
-    } else if (date.getMonth() === 2) {
+    } else if (number === 2) {
       month = 'March';
-    } else if (date.getMonth() === 3) {
+    } else if (number === 3) {
       month = 'April';
-    } else if (date.getMonth() === 4) {
+    } else if (number === 4) {
       month = 'May';
-    } else if (date.getMonth() === 5) {
+    } else if (number === 5) {
       month = 'June';
-    } else if (date.getMonth() === 6) {
+    } else if (number === 6) {
       month = 'July';
-    } else if (date.getMonth() === 7) {
+    } else if (number === 7) {
       month = 'August';
-    } else if (date.getMonth() === 8) {
+    } else if (number === 8) {
       month = 'September';
-    } else if (date.getMonth() === 9) {
+    } else if (number === 9) {
       month = 'October';
-    } else if (date.getMonth() === 10) {
+    } else if (number === 10) {
       month = 'November';
-    } else if (date.getMonth() === 11) {
+    } else if (number === 11) {
       month = 'December';
     }
     return month;
+  }
+  static monthNumber(month) {
+    if (month.toLowerCase() === 'january') {
+      return 1;
+    }
+    if (month.toLowerCase() === 'february') {
+      return 2;
+    }
+    if (month.toLowerCase() === 'march') {
+      return 3;
+    }
+    if (month.toLowerCase() === 'april') {
+      return 4;
+    }
+    if (month.toLowerCase() === 'may') {
+      return 5;
+    }
+    if (month.toLowerCase() === 'june') {
+      return 6;
+    }
+    if (month.toLowerCase() === 'july') {
+      return 7;
+    }
+    if (month.toLowerCase() === 'august') {
+      return 8;
+    }
+    if (month.toLowerCase() === 'september') {
+      return 9;
+    }
+    if (month.toLowerCase() === 'october') {
+      return 10;
+    }
+    if (month.toLowerCase() === 'november') {
+      return 11;
+    }
+    if (month.toLowerCase() === 'december') {
+      return 12;
+    }
   }
 }

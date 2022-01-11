@@ -5,7 +5,7 @@
 }
 
 .mainPane .topPane {
-  min-height: 5.5vh;
+  min-height: 5vh;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
@@ -27,7 +27,7 @@
   padding: 0 3vh 1.5vh 2vh;
 }
 .bodyPane .addons {
-  font-size: 1.75vh;
+  font-size: 1.5vh;
   color: var(--WHITE);
 }
 .bodyPane .propertyPane {

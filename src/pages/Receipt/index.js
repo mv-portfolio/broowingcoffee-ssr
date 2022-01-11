@@ -1,20 +1,18 @@
-import {useEffect, useReducer, useState} from 'react';
+import {useEffect, useReducer} from 'react';
 import {useParams} from 'react-router';
 import {logo} from 'assets/icons';
 import {receipt as receiptReducer, receiptInitState} from 'hooks';
-import {View, Text, Image, Separator} from 'components';
+import {View, Text, Image, Separator, Icon} from 'components';
 import {ErrorPage, LoadingPage} from 'pages';
 import {server} from 'network/service';
 import styles from './.module.css';
 import PurchasedItemList from './components/PurchasedItemList';
-import Formatter from 'utils/Formatter';
-import {getProperties} from 'utils/helper';
+import {getPropsValues} from 'utils/helper';
 import * as details from './details';
-import {
-  getOrganizedPurchasedProducts,
-  onComputePrice,
-  onComputeTax,
-} from 'utils/strategies';
+import {getOrganizedPurchasedProducts, onComputePrice} from 'utils/strategies';
+import Formatter from 'utils/Formatter';
+import {hp} from 'utils/responsive';
+import {BG_COLOR} from 'constants/colors';
 
 export default function Receipt() {
   const {token} = useParams();
@@ -29,15 +27,12 @@ export default function Receipt() {
   const onComputeTotalPrice = (products = [], discount) => {
     let totalPrice = 0;
     products.forEach(product => {
-      totalPrice += parseFloat(onComputePrice(true, product));
+      totalPrice += parseFloat(onComputePrice(product));
     });
-    return totalPrice - totalPrice * (discount / 100);
+    return totalPrice;
   };
-  const totalPrice = onComputeTotalPrice(state.payload.products, state.payload.discount);
-  const tax = onComputeTax(
-    onComputeTotalPrice(state.payload.products, state.payload.discount),
-    0,
-  );
+  const totalPrice = onComputeTotalPrice(state.payload.products);
+  const totalDiscount = (state.payload.discount / 100) * totalPrice;
 
   const screenInitListener = () => {
     server
@@ -62,21 +57,48 @@ export default function Receipt() {
       <View style={styles.mainPane}>
         <View style={styles.logoPane}>
           <Image style={styles.logo} source={logo} />
+          <Separator horizontal={1} />
+          <View style={styles.logoRightPane}>
+            <Text style={styles.textTitle}>BROOWING COFFEE</Text>
+            <Separator vertical={0.15} />
+            <Text style={styles.text}>P. Tuazon Cubao, Quezon City</Text>
+            <Separator vertical={0.15} />
+            <View style={styles.contactsPane}>
+              <a
+                className={styles.contact}
+                href='https://www.instagram.com/broowingcoffee/'>
+                <Icon font='AntDesign' name='instagram' color={BG_COLOR} size={hp(3)} />
+                <Separator horizontal={0.5} />
+                <Text style={styles.contactText}>INSTA</Text>
+              </a>
+              <Separator horizontal={0.5} />
+              <Text>|</Text>
+              <Separator horizontal={0.75} />
+              <View style={styles.contact}>
+                <Icon font='AntDesign' name='phone' color={BG_COLOR} size={hp(2.5)} />
+                <Separator horizontal={0.5} />
+                <Text style={styles.contactText}>+63 0995 693 5564</Text>
+              </View>
+            </View>
+          </View>
         </View>
         <View style={styles.topPane}>
           <View style={styles.headerPane}>
             <Text style={styles.title}>Your e-Receipt</Text>
             <Separator vertical={0.5} />
             <Text style={styles.subtitle}>
-              Thank you for purchasing our products, you may used this receipt for any
-              case of issue on your recent transaction
+              Thank you for purchasing our products, this will be serve as Official
+              Receipt, you may use this receipt for any case of issue or concern on your
+              recent transaction
             </Text>
           </View>
         </View>
         <View style={styles.bodyPane}>
           <View style={styles.contentPane}>
             <View style={styles.headerPane}>
-              <Text style={styles.text}>{`Item${products.length > 1 ? 's' : ''}`}</Text>
+              <Text style={styles.text}>{`${state.payload.products.length} Item${
+                state.payload.products.length > 1 ? 's' : ''
+              }`}</Text>
               <Text style={styles.text}>Computed Price</Text>
             </View>
             <Separator vertical={0.5} />
@@ -85,15 +107,21 @@ export default function Receipt() {
         </View>
         <View style={styles.bottomPane}>
           <View style={styles.contentPane}>
-            {details({
-              txnId: state.payload._id,
-              txnDiscount: `${state.payload.discount}%`,
-              dateIssued: Formatter.getDateDifference(state.payload.date_created),
-              tax: tax,
-              subtotal: Formatter.toMoney(totalPrice),
-              total: Formatter.toMoney(totalPrice + tax),
-            }).map((detail, index) => {
-              const {property, value} = getProperties(detail)[0];
+            {getPropsValues(
+              details({
+                txnId: state.payload._id,
+                txnDiscount: Formatter.toMoney(totalDiscount),
+                dateIssued: `${new Date(
+                  state.payload.date_created,
+                ).toLocaleDateString()} - ${new Date(
+                  state.payload.date_created,
+                ).toLocaleTimeString()}`,
+                issuedBy: Formatter.toName(
+                  `${state.payload.issuedBy.firstname} ${state.payload.issuedBy.lastname}`,
+                ),
+                total: Formatter.toMoney(totalPrice - totalDiscount),
+              }),
+            ).map(({property, value}, index) => {
               return (
                 <View key={index} style={styles.propertyPane}>
                   <Text style={styles.text}>{property}</Text>

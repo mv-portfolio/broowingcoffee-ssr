@@ -2,7 +2,7 @@ const getUsername = text => {
   let lastIndex = text.indexOf('@');
   return text.substring(0, lastIndex);
 };
-const getProperties = obj => {
+const getPropsValues = obj => {
   let temp_data = [];
   Object.keys(obj).forEach((objKey, objKeyIdx) => {
     Object.values(obj).forEach((objVal, objValIdx) => {
@@ -90,11 +90,11 @@ const getSpecificProperty = (keys, payload) => {
 };
 const arrayFind = (array = [], filter) => {
   if (!filter) return array;
-  const filterProps = getProperties(filter);
+  const filterProps = getPropsValues(filter);
   const find = array.filter(data => {
     let matches = [];
     let matchedNumber = 0;
-    getProperties(data).forEach(({property, value}) => {
+    getPropsValues(data).forEach(({property, value}) => {
       filterProps.forEach(({property: property2, value: value2}) => {
         matches.push(property === property2 && value === value2);
       });
@@ -110,11 +110,11 @@ const arrayFind = (array = [], filter) => {
 };
 const arrayFilter = (data = [], filter) => {
   let temp_data = [];
-  const filterProps = getProperties(filter);
+  const filterProps = getPropsValues(filter);
   temp_data = data.filter(item => {
     let matches = [];
     let matchedNumber = 0;
-    getProperties(item).forEach(({property, value}) => {
+    getPropsValues(item).forEach(({property, value}) => {
       filterProps.forEach(({property: property2, value: value2}) => {
         matches.push(property === property2 && value === value2);
       });
@@ -130,11 +130,11 @@ const arrayFilter = (data = [], filter) => {
 };
 const arrayUpdate = (data = [], filter, payload = {}) => {
   let temp_data = [];
-  const {property: filterKey, value: filterValue} = getProperties(filter)[0];
+  const {property: filterKey, value: filterValue} = getPropsValues(filter)[0];
 
   temp_data = data.map(item => {
     let keyValue = '';
-    getProperties(item).forEach(({property, value}) => {
+    getPropsValues(item).forEach(({property, value}) => {
       if (property === filterKey) {
         keyValue = value;
       }
@@ -152,7 +152,7 @@ const arrayUpdate = (data = [], filter, payload = {}) => {
 
 export {
   getUsername,
-  getProperties,
+  getPropsValues,
   getSpecificProperty,
   arrayFind,
   arrayUpdate,

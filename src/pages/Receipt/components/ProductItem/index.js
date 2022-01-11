@@ -1,13 +1,13 @@
 import {Separator, Text, View} from 'components';
 
-import {getProperties} from 'utils/helper';
+import {getPropsValues} from 'utils/helper';
 import {onComputePrice} from 'utils/strategies';
 import Formatter from 'utils/Formatter';
 
 import styles from './.module.css';
 
 export default function ProductItem({isShow = true, defaultStyle, onClick, ...props}) {
-  const products = getProperties(props)
+  const products = getPropsValues(props)
     .filter(({property}) => property !== 'name')
     .filter(({property}) => property !== 'copied');
 
@@ -28,21 +28,20 @@ export default function ProductItem({isShow = true, defaultStyle, onClick, ...pr
     <View style={styles.mainPane} defaultStyle={defaultStyle} onClick={onClick}>
       <View style={styles.topPane}>
         <Text style={styles.name}>{`${Formatter.toName(props.name)} ${
-          isShow ? '' : props.copied - 1 <= 0 ? '' : `x ${props.copied}`
+          props.copied - 1 <= 0 ? '' : `x ${props.copied}`
         }`}</Text>
-        <Text style={styles.price}>{onComputePrice(isShow, props)}</Text>
+        {!isShow && <Text style={styles.price}>{onComputePrice(props)}</Text>}
       </View>
       {isShow && (
         <View style={styles.bodyPane}>
           {products.map(({property, value}, index) =>
             Array.isArray(value) ? (
               value.length <= 0 ? null : (
-                <View key={index}>
-                  <Separator vertical={0.5} />
-                  <Text style={styles.addons}>add-ons</Text>
+                <View key={index} defaultStyle={{paddingTop: '0.5vh'}}>
+                  <Text style={styles.addons}>Add-ons</Text>
                   {props.addons.map((addon, index) => (
-                    <View style={styles.propertyPaneAddons} key={index}>
-                      <Text style={styles.propertyName}>- {addon.name}</Text>
+                    <View key={index} style={styles.propertyPaneAddons}>
+                      <Text style={styles.propertyName}>{addon.name}</Text>
                       <Text style={styles.propertyValue}>
                         {Formatter.toMoney(addon.price)}
                       </Text>
@@ -51,7 +50,12 @@ export default function ProductItem({isShow = true, defaultStyle, onClick, ...pr
                 </View>
               )
             ) : (
-              <View style={styles.propertyPane} key={index}>
+              <View
+                key={index}
+                style={styles.propertyPane}
+                defaultStyle={{
+                  paddingBottom: index + 1 !== products.length ? '0.15vh' : '0',
+                }}>
                 <Text style={styles.propertyName}>{property}</Text>
                 <Text style={styles.propertyValue}>{onFormat(property, value)}</Text>
               </View>
