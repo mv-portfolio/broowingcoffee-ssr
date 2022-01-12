@@ -110,7 +110,7 @@ export default function Receipt() {
             {getPropsValues(
               details({
                 txnId: state.payload._id,
-                txnDiscount: Formatter.toMoney(totalDiscount),
+                txnDiscount: `${Formatter.toMoney(totalDiscount)} (${state.payload.discount}%)`,
                 dateIssued: `${new Date(
                   state.payload.date_created,
                 ).toLocaleDateString()} - ${new Date(
