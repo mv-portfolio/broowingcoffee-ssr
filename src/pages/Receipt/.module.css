@@ -49,7 +49,7 @@
 }
 
 .mainPane .topPane {
-  flex: 2;
+  flex: 0.5;
   align-items: center;
   justify-content: center;
 }
@@ -71,12 +71,11 @@
 }
 
 .mainPane .bodyPane {
-  flex: 0.5;
+  flex: 1;
   align-items: center;
 }
 .bodyPane .contentPane {
   width: 42.5vh;
-  padding-bottom: 2vh;
 }
 .contentPane .headerPane {
   flex-direction: row;

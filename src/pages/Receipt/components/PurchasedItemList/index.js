@@ -1,6 +1,5 @@
-import {Text, View} from 'components';
 import {useState} from 'react';
-import {getOrganizedPurchasedProducts} from 'utils/strategies';
+import {View} from 'components';
 import ProductItem from '../ProductItem';
 import styles from './.module.css';
 

@@ -1,4 +1,4 @@
-import {Separator, Text, View} from 'components';
+import {Text, View} from 'components';
 
 import {getPropsValues} from 'utils/helper';
 import {onComputePrice} from 'utils/strategies';
