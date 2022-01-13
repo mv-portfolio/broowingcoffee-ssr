@@ -1,6 +1,7 @@
-const details = ({txnId, txnDiscount, dateIssued, issuedBy, total}) => ({
+const details = ({txnId, txnDiscount, tinNumber, dateIssued, issuedBy, total}) => ({
   'TXN ID': txnId,
   'TXN DISCOUNT': txnDiscount,
+  'TIN NUMBER': tinNumber,
   'DATE ISSUED': dateIssued,
   'ISSUED BY': issuedBy,
   TOTAL: total,

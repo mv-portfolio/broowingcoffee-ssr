@@ -5,14 +5,15 @@ import {receipt as receiptReducer, receiptInitState} from 'hooks';
 import {View, Text, Image, Separator, Icon} from 'components';
 import {ErrorPage, LoadingPage} from 'pages';
 import {server} from 'network/service';
-import styles from './.module.css';
-import PurchasedItemList from './components/PurchasedItemList';
 import {getPropsValues} from 'utils/helper';
-import * as details from './details';
+import {BG_COLOR} from 'constants/colors';
+import {ADDRESS, CONTACT_NUMBER, INSTAGRAM, TIN_NUMBER} from 'constants/strings';
 import {getOrganizedPurchasedProducts, onComputePrice} from 'utils/strategies';
 import Formatter from 'utils/Formatter';
 import {hp} from 'utils/responsive';
-import {BG_COLOR} from 'constants/colors';
+import * as details from './details';
+import PurchasedItemList from './components/PurchasedItemList';
+import styles from './.module.css';
 
 export default function Receipt() {
   const {token} = useParams();
@@ -61,12 +62,10 @@ export default function Receipt() {
           <View style={styles.logoRightPane}>
             <Text style={styles.textTitle}>BROOWING COFFEE</Text>
             <Separator vertical={0.15} />
-            <Text style={styles.text}>P. Tuazon Cubao, Quezon City</Text>
+            <Text style={styles.text}>{ADDRESS}</Text>
             <Separator vertical={0.15} />
             <View style={styles.contactsPane}>
-              <a
-                className={styles.contact}
-                href='https://www.instagram.com/broowingcoffee/'>
+              <a className={styles.contact} href={INSTAGRAM}>
                 <Icon font='AntDesign' name='instagram' color={BG_COLOR} size={hp(3)} />
                 <Separator horizontal={0.5} />
                 <Text style={styles.contactText}>INSTA</Text>
@@ -77,7 +76,7 @@ export default function Receipt() {
               <View style={styles.contact}>
                 <Icon font='AntDesign' name='phone' color={BG_COLOR} size={hp(2.5)} />
                 <Separator horizontal={0.5} />
-                <Text style={styles.contactText}>+63 0995 693 5564</Text>
+                <Text style={styles.contactText}>{CONTACT_NUMBER}</Text>
               </View>
             </View>
           </View>
@@ -110,7 +109,10 @@ export default function Receipt() {
             {getPropsValues(
               details({
                 txnId: state.payload._id,
-                txnDiscount: `${Formatter.toMoney(totalDiscount)} (${state.payload.discount}%)`,
+                txnDiscount: `${Formatter.toMoney(totalDiscount)} (${
+                  state.payload.discount
+                }%)`,
+                tinNumber: TIN_NUMBER,
                 dateIssued: `${new Date(
                   state.payload.date_created,
                 ).toLocaleDateString()} - ${new Date(
