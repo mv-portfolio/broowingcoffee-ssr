@@ -84,7 +84,6 @@ export default function HomePage() {
       return;
     }
   };
-
   const onClickChange = () => {
     if (!state.isMatched) {
       setState({
@@ -130,7 +129,7 @@ export default function HomePage() {
             <Text style={styles.title}>New Password</Text>
             <Separator vertical={0.25} />
             <Text style={styles.subtitle}>
-              Please be sure, the password you enter was not leaked to anyone
+              Please be sure, the password you entered was not leaked to anyone
             </Text>
           </View>
         </View>
@@ -176,7 +175,6 @@ export default function HomePage() {
       </View>
     );
   }
-
   if (state.authRequest === 'success-done') {
     document.title = 'Broowing Coffee | Success';
     return (
@@ -186,7 +184,6 @@ export default function HomePage() {
       />
     );
   }
-
   if (state.authRequest === 'failed') {
     document.title = 'Broowing Coffee | Error';
     return <ErrorPage />;

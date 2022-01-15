@@ -14,3 +14,9 @@
   font-size: 2.5vh;
   color: var(--WHITE);
 }
+
+.mainPane .link {
+  font-family: 'Font';
+  text-decoration: none;
+  color: var(--ACCENT-COLOR);
+}
