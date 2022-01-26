@@ -78,7 +78,8 @@
   width: 42.5vh;
 }
 .contentPane .purchasedList {
-  height: 33vh;
+  height: 30vh;
+  background-color: var(--BACKGROUND-COLOR-1);
 }
 .contentPane .headerPane {
   flex-direction: row;
