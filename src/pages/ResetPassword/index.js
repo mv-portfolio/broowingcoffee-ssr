@@ -17,26 +17,6 @@ export default function HomePage() {
   const history = useHistory();
   const [state, setState] = useReducer(resetPasswordReducer, resetPasswordInitState);
 
-  const screenInitListener = () => {
-    server
-      .peek('/reset-password-auth', {
-        headers: {'reset-auth-token': token},
-      })
-      .then(res => {
-        const {
-          res: {email, token},
-          status,
-        } = res;
-        if (status) {
-          setState({type: 'set', authRequest: 'success', email, token});
-        }
-      })
-      .catch(err => {
-        setState({type: 'set', authRequest: 'failed'});
-      });
-  };
-  useEffect(screenInitListener, []);
-
   const strength = val => {
     let strength = 0;
     if (hasUpperCaseLetter(val)) {
@@ -119,6 +99,27 @@ export default function HomePage() {
         setState({type: 'set', authRequest: 'failed'});
       });
   };
+  
+  const screenInitListener = () => {
+    server
+      .peek('/reset-password-auth', {
+        headers: {'reset-auth-token': token},
+      })
+      .then(res => {
+        const {
+          res: {email, token},
+          status,
+        } = res;
+        if (status) {
+          setState({type: 'set', authRequest: 'success', email, token});
+        }
+      })
+      .catch(err => {
+        setState({type: 'set', authRequest: 'failed'});
+      });
+  };
+  useEffect(screenInitListener, []);
+
 
   if (state.authRequest === 'success') {
     document.title = 'Broowing Coffee | New Password';

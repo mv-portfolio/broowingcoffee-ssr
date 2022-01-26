@@ -5,35 +5,28 @@ import {receipt as receiptReducer, receiptInitState} from 'hooks';
 import {View, Text, Image, Separator, Icon} from 'components';
 import {ErrorPage, LoadingPage} from 'pages';
 import {server} from 'network/service';
-import {getPropsValues} from 'utils/helper';
+import {
+  getDefaultObjectProducts,
+  getPropsValues,
+  onComputePurchasingProducts,
+} from 'utils/helper';
 import {BG_COLOR} from 'constants/colors';
 import {ADDRESS, CONTACT_NUMBER, INSTAGRAM, TIN_NUMBER} from 'constants/strings';
-import {getOrganizedPurchasedProducts, onComputePrice} from 'utils/strategies';
+import PurchasingListItem from './components/PurchasingListItem';
 import Formatter from 'utils/Formatter';
 import {hp} from 'utils/responsive';
 import * as details from './details';
-import PurchasedItemList from './components/PurchasedItemList';
 import styles from './.module.css';
 
 export default function Receipt() {
   const {token} = useParams();
   const [state, setState] = useReducer(receiptReducer, receiptInitState);
 
-  const products =
-    getOrganizedPurchasedProducts(
-      ['name', 'discount', 'type', 'price', 'based', 'addons'],
-      state.payload.products,
-    ) || [];
-
-  const onComputeTotalPrice = (products = [], discount) => {
-    let totalPrice = 0;
-    products.forEach(product => {
-      totalPrice += parseFloat(onComputePrice(product));
-    });
-    return totalPrice;
-  };
-  const totalPrice = onComputeTotalPrice(state.payload.products);
-  const totalDiscount = (state.payload.discount / 100) * totalPrice;
+  // const products =
+  //   getOrganizedPurchasedProducts(
+  //     ['issued_by', 'discount', 'type', 'price', 'based', 'addons'],
+  //     state.payload.products,
+  //   ) || [];
 
   const screenInitListener = () => {
     server
@@ -44,6 +37,7 @@ export default function Receipt() {
         },
       })
       .then(({res}) => {
+        console.log(res);
         setState({type: 'set', authRequest: 'success', payload: res});
       })
       .catch(err => {
@@ -101,7 +95,10 @@ export default function Receipt() {
               <Text style={styles.text}>Computed Price</Text>
             </View>
             <Separator vertical={0.5} />
-            <PurchasedItemList products={products} />
+            <PurchasingListItem
+              style={styles.purchasedList}
+              purchasingProducts={getDefaultObjectProducts(state.payload.products)}
+            />
           </View>
         </View>
         <View style={styles.bottomPane}>
@@ -109,19 +106,21 @@ export default function Receipt() {
             {getPropsValues(
               details({
                 txnId: state.payload._id,
-                txnDiscount: `${Formatter.toMoney(totalDiscount)} (${
-                  state.payload.discount
-                }%)`,
                 tinNumber: TIN_NUMBER,
                 dateIssued: `${new Date(
                   state.payload.date_created,
                 ).toLocaleDateString()} - ${new Date(
                   state.payload.date_created,
                 ).toLocaleTimeString()}`,
-                issuedBy: Formatter.toName(
-                  `${state.payload.issuedBy.firstname} ${state.payload.issuedBy.lastname}`,
+                cash: Formatter.toMoney(state.payload.cash),
+                change: Formatter.toMoney(
+                  state.payload.cash -
+                    onComputePurchasingProducts(state.payload.products),
                 ),
-                total: Formatter.toMoney(totalPrice - totalDiscount),
+                issuedBy: Formatter.toName(state.payload.issued_by),
+                total: Formatter.toMoney(
+                  onComputePurchasingProducts(state.payload.products),
+                ),
               }),
             ).map(({property, value}, index) => {
               return (

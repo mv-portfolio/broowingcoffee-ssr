@@ -71,11 +71,14 @@
 }
 
 .mainPane .bodyPane {
-  flex: 1;
+  flex: 1.25;
   align-items: center;
 }
 .bodyPane .contentPane {
   width: 42.5vh;
+}
+.contentPane .purchasedList {
+  height: 33vh;
 }
 .contentPane .headerPane {
   flex-direction: row;
@@ -123,7 +126,7 @@
 }
 
 .mainPane .footerPane {
-  height: 10vh;
+  height: 7vh;
   align-items: center;
   justify-content: center;
 }
