@@ -1,11 +1,19 @@
-const details = ({txnId, tinNumber, dateIssued, issuedBy, cash, change, total}) => ({
+const details = ({
+  txnId,
+  tinNumber,
+  dateIssued,
+  issuedBy,
+  cashReceived,
+  change,
+  total,
+}) => ({
   'TXN ID': txnId,
   'TIN NUMBER': tinNumber,
   'DATE ISSUED': dateIssued,
   'ISSUED BY': issuedBy,
-  CASH: cash,
-  CHANGE: change,
+  'CASH RECEIVED': cashReceived,
   TOTAL: total,
+  CHANGE: change,
 });
 
-module.exports = details;
+export default details;

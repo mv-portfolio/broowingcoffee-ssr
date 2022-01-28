@@ -15,7 +15,7 @@ import {ADDRESS, CONTACT_NUMBER, INSTAGRAM, TIN_NUMBER} from 'constants/strings'
 import PurchasingListItem from './components/PurchasingListItem';
 import Formatter from 'utils/Formatter';
 import {hp} from 'utils/responsive';
-import * as details from './details';
+import details from './details';
 import styles from './.module.css';
 
 export default function Receipt() {
@@ -112,7 +112,7 @@ export default function Receipt() {
                 ).toLocaleDateString()} - ${new Date(
                   state.payload.date_created,
                 ).toLocaleTimeString()}`,
-                cash: Formatter.toMoney(state.payload.cash),
+                cashReceived: Formatter.toMoney(state.payload.cash),
                 change: Formatter.toMoney(
                   state.payload.cash -
                     onComputePurchasingProducts(state.payload.products),
